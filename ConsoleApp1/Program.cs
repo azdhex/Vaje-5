@@ -8,6 +8,8 @@ namespace ConsoleApp1
         {
             int sirina = 3;
             int visina = 3;
+            int steviloIgralcev = 2;
+            int trenutniIgralec = 1;
 
             int[,] tab = new int[sirina, visina];
 
@@ -60,10 +62,32 @@ namespace ConsoleApp1
 
                 Console.WriteLine("Kam želite dati svoj simbol?");
                 string vnos = Console.ReadLine();
+
+                if (vnos.Length < 2)
+                {
+                    continue;
+                }
+
                 int vnosX = vnos[0] - '1';
                 int vnosY = vnos[1] - 'A';
 
-                tab[vnosX, vnosY] = 1;
+                if (vnosX >= sirina || vnosX < 0)
+                {
+                    continue;
+                }
+
+                if (vnosY >= visina || vnosY < 0)
+                {
+                    continue;
+                }
+
+                tab[vnosX, vnosY] = trenutniIgralec;
+
+                trenutniIgralec = trenutniIgralec + 1;
+                if (trenutniIgralec > steviloIgralcev)
+                {
+                    trenutniIgralec = 1;
+                }
             }
         }
     }
