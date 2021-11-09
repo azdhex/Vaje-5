@@ -23,12 +23,13 @@ namespace ConsoleApp1
             {
                 Console.Clear();
 
-                Console.WriteLine("╔═══╦═══╦═══╗");
+                Console.WriteLine("   1   2   3  ");
+                Console.WriteLine(" ╔═══╦═══╦═══╗");
 
                 for (int y = 0; y < visina; y++)
                 {
-                    Console.Write("║");
-
+                    Console.Write((char)((byte)'A' + y) + "║");
+                    
                     for (int x = 0; x < sirina; x++)
                     {
                         switch (tab[x, y])
@@ -51,14 +52,18 @@ namespace ConsoleApp1
 
                     if (y < visina - 1)
                     {
-                        Console.WriteLine("╠═══╬═══╬═══╣");
+                        Console.WriteLine(" ╠═══╬═══╬═══╣");
                     }
                 }
 
-                Console.WriteLine("╚═══╩═══╩═══╝");
+                Console.WriteLine(" ╚═══╩═══╩═══╝");
 
                 Console.WriteLine("Kam želite dati svoj simbol?");
-                Console.ReadLine();
+                string vnos = Console.ReadLine();
+                int vnosX = vnos[0] - '1';
+                int vnosY = vnos[1] - 'A';
+
+                tab[vnosX, vnosY] = 1;
             }
         }
     }
