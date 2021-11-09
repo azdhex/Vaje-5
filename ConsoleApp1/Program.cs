@@ -6,168 +6,43 @@ namespace ConsoleApp1
     {
         static void Main(string[] args)
         {
-            int sirina = 3;
-            int visina = 3;
-            int steviloIgralcev = 2;
-            int trenutniIgralec = 1;
+            TabelnaIgra igra = new TabelnaIgra(3, 3, 2);
 
-            int[,] tab = new int[sirina, visina];
-
-            for (int x = 0; x < sirina; x++)
+            while (true)
             {
-                for (int y = 0; y < visina; y++)
+                igra.ZacniIgro();
+
+                while (!igra.JeKonecIgre())
                 {
-                    tab[x, y] = 0;
-                }
-            }
+                    igra.IzpisiStanje();
 
-            while (KdoJeZmagal(tab, sirina, visina) == 0)
-            {
-                Console.Clear();
+                    Console.WriteLine("Kam želite dati svoj simbol?");
+                    string vnos = Console.ReadLine();
 
-                Console.WriteLine("   1   2   3  ");
-                Console.WriteLine(" ╔═══╦═══╦═══╗");
-
-                for (int y = 0; y < visina; y++)
-                {
-                    Console.Write((char)((byte)'A' + y) + "║");
-                    
-                    for (int x = 0; x < sirina; x++)
+                    if (vnos.Length < 2)
                     {
-                        switch (tab[x, y])
-                        {
-                            case 0: 
-                                Console.Write("   ");
-                                break;
-                            case 1:
-                                Console.Write(" X ");
-                                break;
-                            case 2:
-                                Console.Write(" O ");
-                                break;
-                        }
-
-                        Console.Write("║");
+                        continue;
                     }
 
-                    Console.WriteLine();
+                    int vnosX = vnos[0] - '1';
+                    int vnosY = vnos[1] - 'A';
 
-                    if (y < visina - 1)
+                    if (vnosX >= 3 || vnosX < 0)
                     {
-                        Console.WriteLine(" ╠═══╬═══╬═══╣");
+                        continue;
                     }
-                }
 
-                Console.WriteLine(" ╚═══╩═══╩═══╝");
-
-                Console.WriteLine("Kam želite dati svoj simbol?");
-                string vnos = Console.ReadLine();
-
-                if (vnos.Length < 2)
-                {
-                    continue;
-                }
-
-                int vnosX = vnos[0] - '1';
-                int vnosY = vnos[1] - 'A';
-
-                if (vnosX >= sirina || vnosX < 0)
-                {
-                    continue;
-                }
-
-                if (vnosY >= visina || vnosY < 0)
-                {
-                    continue;
-                }
-
-                tab[vnosX, vnosY] = trenutniIgralec;
-
-                trenutniIgralec = trenutniIgralec + 1;
-                if (trenutniIgralec > steviloIgralcev)
-                {
-                    trenutniIgralec = 1;
-                }
-            }
-
-            Console.WriteLine("Zmagal je igralec: " + KdoJeZmagal(tab, sirina, visina));
-            Console.ReadLine();
-        }
-
-        public static int KdoJeZmagal(int[,] tabela, int sirina, int visina)
-        {
-            int jeZmagal = 0;
-
-            // Ali je kdo zmagal po stolpcih?
-            for (int x = 0; x < sirina; x++)
-            {
-                jeZmagal = tabela[x, 0];
-                for (int y = 1; y < visina; y++)
-                {
-                    if (jeZmagal != tabela[x, y])
+                    if (vnosY >= 3 || vnosY < 0)
                     {
-                        jeZmagal = 0;
-                        break;
+                        continue;
                     }
+
+                    igra.Igraj(vnosX, vnosY);
                 }
 
-                if (jeZmagal > 0)
-                {
-                    return jeZmagal;
-                }
+                Console.WriteLine("Zmagal je igralec: " + igra.KdoJeZmagal());
+                Console.ReadLine();
             }
-
-            // Ali je kdo zmagal po vrsticah?
-            for (int y = 0; y < visina; y++)
-            {
-                jeZmagal = tabela[0, y];
-                for (int x = 1; x < sirina; x++)
-                {
-                    if (jeZmagal != tabela[x, y])
-                    {
-                        jeZmagal = 0;
-                        break;
-                    }
-                }
-
-                if (jeZmagal > 0)
-                {
-                    return jeZmagal;
-                }
-            }
-
-            // Ali je kdo zmagal po diagonalah?
-            jeZmagal = tabela[0, 0];
-            for (int x = 1; x < sirina; x++)
-            {
-                if (jeZmagal != tabela[x, x])
-                {
-                    jeZmagal = 0;
-                    break;
-                }
-            }
-            if (jeZmagal > 0)
-            {
-                return jeZmagal;
-            }
-
-            jeZmagal = tabela[sirina - 1, 0];
-            for (int x = sirina - 2; x >= 0; x--)
-            {
-                if (jeZmagal != tabela[x, sirina - 1 - x])
-                {
-                    jeZmagal = 0;
-                    break;
-                }
-            }
-
-            if (jeZmagal > 0)
-            {
-                return jeZmagal;
-            }
-
-            // Nihče ni zmagal
-            return 0;
         }
     }
 }
