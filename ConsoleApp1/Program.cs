@@ -21,7 +21,7 @@ namespace ConsoleApp1
                 }
             }
 
-            while (true)
+            while (KdoJeZmagal(tab, sirina, visina) == 0)
             {
                 Console.Clear();
 
@@ -89,6 +89,85 @@ namespace ConsoleApp1
                     trenutniIgralec = 1;
                 }
             }
+
+            Console.WriteLine("Zmagal je igralec: " + KdoJeZmagal(tab, sirina, visina));
+            Console.ReadLine();
+        }
+
+        public static int KdoJeZmagal(int[,] tabela, int sirina, int visina)
+        {
+            int jeZmagal = 0;
+
+            // Ali je kdo zmagal po stolpcih?
+            for (int x = 0; x < sirina; x++)
+            {
+                jeZmagal = tabela[x, 0];
+                for (int y = 1; y < visina; y++)
+                {
+                    if (jeZmagal != tabela[x, y])
+                    {
+                        jeZmagal = 0;
+                        break;
+                    }
+                }
+
+                if (jeZmagal > 0)
+                {
+                    return jeZmagal;
+                }
+            }
+
+            // Ali je kdo zmagal po vrsticah?
+            for (int y = 0; y < visina; y++)
+            {
+                jeZmagal = tabela[0, y];
+                for (int x = 1; x < sirina; x++)
+                {
+                    if (jeZmagal != tabela[x, y])
+                    {
+                        jeZmagal = 0;
+                        break;
+                    }
+                }
+
+                if (jeZmagal > 0)
+                {
+                    return jeZmagal;
+                }
+            }
+
+            // Ali je kdo zmagal po diagonalah?
+            jeZmagal = tabela[0, 0];
+            for (int x = 1; x < sirina; x++)
+            {
+                if (jeZmagal != tabela[x, x])
+                {
+                    jeZmagal = 0;
+                    break;
+                }
+            }
+            if (jeZmagal > 0)
+            {
+                return jeZmagal;
+            }
+
+            jeZmagal = tabela[sirina - 1, 0];
+            for (int x = sirina - 2; x >= 0; x--)
+            {
+                if (jeZmagal != tabela[x, sirina - 1 - x])
+                {
+                    jeZmagal = 0;
+                    break;
+                }
+            }
+
+            if (jeZmagal > 0)
+            {
+                return jeZmagal;
+            }
+
+            // Nihče ni zmagal
+            return 0;
         }
     }
 }
